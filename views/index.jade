@@ -1,5 +1,45 @@
-extends layout
+doctype html
+html(lang='en')
+  head
+    title File explorer with node.js
+    style.
+      body {
+        padding: 40px;
+      }
 
-block content
-  h1= title
-  p Welcome to #{title}
+      h3 {
+        width: 100%;
+        font-size: 16px;
+        font-weight: bold;
+        border-bottom: 1px solid black;
+      }
+
+      h3 > a {
+        margin-right: 10px;
+        text-decoration: none;
+        font-size: 18px;
+      }
+
+      ul {
+        list-style: none
+      }
+
+      ul > li > img {
+        position: relative;
+        top: 4px;
+        right: 8px;
+      }
+  body
+    h3
+     if(current !== absPath + '/')
+       a(href='/', title='Root directory')
+        | ...
+       a(href='#{prev}', title='Go back')
+        img(src='/images/previous.png')
+     | #{current}
+    ul
+     each item in items
+       - var type = item.dir ? 'folder' : 'file'
+       li
+         img(src='/images/#{type}.png')
+         a(href='#{item.path}')=item.name
