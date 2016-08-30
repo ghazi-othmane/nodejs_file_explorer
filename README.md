@@ -1,7 +1,9 @@
 # nodejs_file_explorer
-Basic file explorer with node.js
 
-Instructions to run locally:
-1- Clone repo
-2- Run: npm update/install
-3- Run: node bin/www
+Basic file explorer with node.js </br>
+Root directory: /tmp
+
+## Instructions to run:
+* Clone repo
+* Run: npm update/install
+* Run: node bin/www
