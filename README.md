@@ -1,6 +1,6 @@
 # nodejs_file_explorer
 
-Basic file explorer with node.js </br>
+Basic file explorer with node.js, Express, Jade and MongoDB</br>
 Root directory: /tmp
 
 ## Instructions to run:
