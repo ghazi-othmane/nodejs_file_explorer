@@ -24,8 +24,8 @@ router.get('/*', function(req, res, next) {
       vData.current = path;
       vData.absPath = absPath;
       vData.prev = '';
-      for(var i = 0; i < reqPath.split('/').length - 1; i++)
-        vData.prev += '/' + reqPath.split('/')[i]
+      for(var i = 0; i < reqPath.split('/').length - (reqPath.charAt(reqPath.length - 1) == '/' ? 2 : 1); i++)
+        vData.prev +=  reqPath.split('/')[i] + '/'
 
       // Listing items in path
       fs.readdir(path, function(err, items){
