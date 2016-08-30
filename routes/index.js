@@ -3,6 +3,7 @@ var fs = require('fs'),
     url = require('url'),
     express = require('express'),
     pth = require("path"),
+    dblogger = require('../modules/dblogger'),
     router = express.Router();
 
 router.get('/*', function(req, res, next) {
@@ -37,22 +38,26 @@ router.get('/*', function(req, res, next) {
         }
 
         // Log open event
-        // TODO:..
+        dblogger.logEvent(path, 'O', function(err){
 
-        // Items list
-        items.map(function(item){
-          return {
-            name: item,
-            path: pth.join(reqPath, item).replace(new RegExp(/%20/gi), ' '),
-            dir: fs.statSync(pth.join(path, item).replace(new RegExp(/%20/gi), ' ')).isDirectory()
-          }
-        }).forEach(function(item){
-            vData.items.push(item);
+            // Error db ?
+            if(err)
+             console.log(err);
+
+            // Items list
+            items.map(function(item){
+                return {
+                    name: item,
+                    path: pth.join(reqPath, item).replace(new RegExp(/%20/gi), ' '),
+                    dir: fs.statSync(pth.join(path, item).replace(new RegExp(/%20/gi), ' ')).isDirectory()
+                }
+            }).forEach(function(item){
+                vData.items.push(item);
+            });
+
+            // Rendering view
+            res.render('index', vData);
         });
-
-        // Rendering view
-        res.render('index', vData);
-
       });
   }
 
@@ -60,10 +65,16 @@ router.get('/*', function(req, res, next) {
   else if(stat.isFile()) {
 
     // Log download event
-    // TODO:..
+    dblogger.logEvent(path, 'D', function(err){
 
-    res.setHeader('Content-disposition', 'attachment; filename=' + path.split('/')[path.split('/').length - 1]);
-    fs.createReadStream(path).pipe(res);
+        // Error db ?
+        if(err)
+          console.log(err);
+
+        // Pipe file
+        res.setHeader('Content-disposition', 'attachment; filename=' + path.split('/')[path.split('/').length - 1]);
+        fs.createReadStream(path).pipe(res);
+    })
   }
 
   // Path not found
